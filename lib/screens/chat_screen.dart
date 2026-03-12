@@ -15,6 +15,13 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final _service = FirestoreService();
   final _scrollController = ScrollController();
+  late final Stream<List<Message>> _messagesStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _messagesStream = _service.messagesStream();
+  }
 
   @override
   void dispose() {
@@ -64,12 +71,42 @@ class _ChatScreenState extends State<ChatScreen> {
             children: [
               Expanded(
                 child: StreamBuilder<List<Message>>(
-                  stream: _service.messagesStream(),
+                  stream: _messagesStream,
                   builder: (context, snapshot) {
-                    final messages = snapshot.data ?? [];
-
                     // Auto-scroll when new messages arrive.
                     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.error_outline_rounded,
+                                size: 48,
+                                color: theme.colorScheme.error,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'Could not load messages',
+                                style: theme.textTheme.titleMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Check Firestore rules in Firebase Console.\n${snapshot.error}',
+                                style: theme.textTheme.bodySmall,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+
+                    final messages = snapshot.data ?? [];
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
@@ -90,7 +127,18 @@ class _ChatScreenState extends State<ChatScreen> {
               const Divider(height: 1),
               MessageInput(
                 onSend: (text) async {
-                  await _service.sendMessage(text);
+                  try {
+                    await _service.sendMessage(text);
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Failed to send: $e'),
+                          backgroundColor: theme.colorScheme.error,
+                        ),
+                      );
+                    }
+                  }
                 },
               ),
             ],
