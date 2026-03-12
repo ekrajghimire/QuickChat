@@ -1,4 +1,4 @@
-name: classboard
+name: quick_chat
 description: "Simple real-time anonymous class message board for Flutter Web."
 publish_to: "none"
 version: 1.0.0+1

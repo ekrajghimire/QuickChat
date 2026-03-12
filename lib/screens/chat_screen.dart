@@ -38,7 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        title: const Text('ClassBoard'),
+        title: const Text('QuickChat'),
         centerTitle: true,
         actions: [
           Padding(

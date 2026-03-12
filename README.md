@@ -1,4 +1,4 @@
-# classboard
+# QuickChat
 
 A new Flutter project.
 

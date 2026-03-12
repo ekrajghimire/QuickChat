@@ -1,6 +1,6 @@
 {
-    "name": "classboard",
-    "short_name": "classboard",
+    "name": "QuickChat",
+    "short_name": "QuickChat",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

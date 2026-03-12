@@ -10,16 +10,16 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const ClassBoardApp());
+  runApp(const QuickChatApp());
 }
 
-class ClassBoardApp extends StatelessWidget {
-  const ClassBoardApp({super.key});
+class QuickChatApp extends StatelessWidget {
+  const QuickChatApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ClassBoard',
+      title: 'QuickChat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
