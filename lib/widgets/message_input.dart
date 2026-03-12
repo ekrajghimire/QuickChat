@@ -27,6 +27,7 @@ class _MessageInputState extends State<MessageInput> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SafeArea(
       top: false,
       child: Padding(
@@ -40,10 +41,17 @@ class _MessageInputState extends State<MessageInput> {
                 maxLines: 3,
                 textInputAction: TextInputAction.send,
                 onSubmitted: (_) => _handleSend(),
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.onSurface,
+                ),
+                cursorColor: theme.colorScheme.primary,
                 decoration: InputDecoration(
                   hintText: 'Type a message...',
+                  hintStyle: TextStyle(
+                    color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+                  ),
                   filled: true,
-                  fillColor: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.6),
+                  fillColor: theme.colorScheme.surfaceContainerHigh.withOpacity(0.8),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
